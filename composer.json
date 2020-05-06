@@ -1,0 +1,39 @@
+{
+	"name": "68publishers/environment",
+	"type": "composer-plugin",
+	"description": "Composer plugin for environment loading.",
+	"keywords": ["68publishers", "environment", "env", "nette"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Tomáš Glawaty",
+			"email": "tomasglawaty@icloud.com"
+		}
+	],
+	"require": {
+		"php": "^7.2",
+		"composer-plugin-api": "^1.0",
+		"symfony/dotenv": "^5.0"
+	},
+	"require-dev": {
+		"composer/composer": "^1.10",
+		"friendsofphp/php-cs-fixer": "^2.0",
+		"nette/tester": "^1.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"SixtyEightPublishers\\Environment\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"SixtyEightPublishers\\Environment\\Tests\\": "tests/"
+		}
+	},
+	"extra": {
+		"class": "SixtyEightPublishers\\Environment\\EnvironmentPlugin"
+	},
+	"config": {
+		"sort-packages": true
+	}
+}
