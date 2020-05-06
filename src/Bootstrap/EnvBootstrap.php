@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Bootstrap;
 
+use Nette;
 use Symfony;
 
 final class EnvBootstrap
@@ -42,12 +43,28 @@ final class EnvBootstrap
 			}
 		}
 
-		$_SERVER[self::APP_DEBUG] = $_ENV[self::APP_DEBUG] = $debug;
+		$_SERVER[self::APP_DEBUG] = $_ENV[self::APP_DEBUG] = $debug ? '1' : '0';
 
-		return [
-			self::APP_ENV => $_ENV[self::APP_ENV],
-			self::APP_DEBUG => $_ENV[self::APP_DEBUG],
-		];
+		return $_ENV;
+	}
+
+	/**
+	 * @param \Nette\Configurator $configurator
+	 * @param string              $rootDir
+	 * @param array               $debugModeDetectors
+	 *
+	 * @return array
+	 */
+	public static function bootNetteConfigurator(Nette\Configurator $configurator, string $rootDir, array $debugModeDetectors = []): array
+	{
+		$env = self::boot($rootDir, $debugModeDetectors);
+
+		$configurator->setDebugMode((bool) $env[self::APP_DEBUG]);
+		$configurator->addDynamicParameters([
+			'env' => $env,
+		]);
+
+		return $env;
 	}
 
 	/**
