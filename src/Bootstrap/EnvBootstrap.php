@@ -12,6 +12,9 @@ final class EnvBootstrap
 	public const    APP_ENV = 'APP_ENV',
 					APP_DEBUG = 'APP_DEBUG';
 
+	/**
+	 * @throws \RuntimeException
+	 */
 	public function __construct()
 	{
 		throw new \RuntimeException(sprintf(
