@@ -16,6 +16,8 @@ final class EnvAccessor
 		'bool' => 'boolval',
 		'base64'=> 'base64_encode',
 		'json_encode' => [__CLASS__, 'toJsonArray'],
+		'not' => [__CLASS__, 'negate'],
+		'negate' => [__CLASS__, 'negate'],
 	];
 
 	/**
@@ -68,5 +70,17 @@ final class EnvAccessor
 	public static function toJsonArray($value): array
 	{
 		return json_decode($value, TRUE);
+	}
+
+	/**
+	 * @internal
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	public static function negate($value): bool
+	{
+		return !$value;
 	}
 }
