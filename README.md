@@ -26,6 +26,8 @@ For ENV variables loading call this static method after requiring Composer's aut
 The first argument is a relative path to the application root directory and the second argument is an array of debug mode detectors.
 
 ```php
+<?php
+
 use SixtyEightPublishers\Environment\Debug;
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
@@ -47,6 +49,8 @@ EnvBootstrap::boot(__DIR__ . '/..', [
 If you're using [Nette Framework](https://nette.org) then you can in the bootstrap use this method instead:
 
 ```php
+<?php
+
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
