@@ -16,7 +16,7 @@ final class IpAddressDetector implements IDebugModeDetector
 	 * @param array       $list
 	 * @param string|NULL $cookieName
 	 */
-	public function __construct(array $list, ?string $cookieName = 'debug-please')
+	public function __construct(array $list, ?string $cookieName = 'app-debug')
 	{
 		$this->list = $list;
 		$this->cookieName = $cookieName;

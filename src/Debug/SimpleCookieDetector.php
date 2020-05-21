@@ -16,7 +16,7 @@ final class SimpleCookieDetector implements IDebugModeDetector
 	 * @param string $value
 	 * @param string $name
 	 */
-	public function __construct(string $value, string $name = 'debug-please')
+	public function __construct(string $value, string $name = 'app-debug')
 	{
 		$this->value = $value;
 		$this->name = $name;
