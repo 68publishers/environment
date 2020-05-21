@@ -32,21 +32,7 @@ final class EnvBootstrap
 	public static function boot(string $rootDir, array $debugModeDetectors = []): array
 	{
 		self::loadEnv($rootDir);
-
-		$_SERVER += $_ENV;
-		$_SERVER[self::APP_ENV] = $_ENV[self::APP_ENV] = ($_SERVER[self::APP_ENV] ?? $_ENV[self::APP_ENV] ?? NULL) ?: 'dev';
-
-		$debug = FALSE;
-
-		foreach ($debugModeDetectors as $debugModeDetector) {
-			if (TRUE === $debugModeDetector->detect()) {
-				$debug = TRUE;
-
-				break;
-			}
-		}
-
-		$_SERVER[self::APP_DEBUG] = $_ENV[self::APP_DEBUG] = $debug ? '1' : '0';
+		self::detectDebugMode($debugModeDetectors);
 
 		return $_ENV;
 	}
@@ -76,7 +62,7 @@ final class EnvBootstrap
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	private static function loadEnv(string $rootDir): void
+	public static function loadEnv(string $rootDir): void
 	{
 		if (is_array($env = @include $rootDir . '/.env.local.php') && ($_SERVER[self::APP_ENV] ?? $_ENV[self::APP_ENV] ?? $env[self::APP_ENV]) === $env[self::APP_ENV]) {
 			foreach ($env as $k => $v) {
@@ -91,5 +77,30 @@ final class EnvBootstrap
 		}
 
 		(new Symfony\Component\Dotenv\Dotenv(FALSE))->loadEnv($rootDir . '/.env');
+
+		$_SERVER += $_ENV;
+		$_SERVER[self::APP_ENV] = $_ENV[self::APP_ENV] = ($_SERVER[self::APP_ENV] ?? $_ENV[self::APP_ENV] ?? NULL) ?: 'dev';
+	}
+
+	/**
+	 * @param array $debugModeDetectors
+	 *
+	 * @return bool
+	 */
+	public static function detectDebugMode(array $debugModeDetectors = []): bool
+	{
+		$debug = FALSE;
+
+		foreach ($debugModeDetectors as $debugModeDetector) {
+			if (TRUE === $debugModeDetector->detect()) {
+				$debug = TRUE;
+
+				break;
+			}
+		}
+
+		$_SERVER[self::APP_DEBUG] = $_ENV[self::APP_DEBUG] = $debug ? '1' : '0';
+
+		return $debug;
 	}
 }
