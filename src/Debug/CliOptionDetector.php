@@ -12,7 +12,7 @@ final class CliOptionDetector implements IDebugModeDetector
 	/**
 	 * @param string $optionName
 	 */
-	public function __construct(string $optionName = 'debug')
+	public function __construct(string $optionName = 'app-debug')
 	{
 		$this->optionName = $optionName;
 	}
