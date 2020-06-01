@@ -24,7 +24,10 @@
 	"autoload": {
 		"psr-4": {
 			"SixtyEightPublishers\\Environment\\": "src/"
-		}
+		},
+		"files": [
+			"src/env_functions.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
