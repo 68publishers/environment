@@ -77,7 +77,7 @@ final class EnvBootstrap
 			throw new RuntimeException('Please required package symfony/dotenv.');
 		}
 
-		(new Dotenv(FALSE))->loadEnv($rootDir . '/.env');
+		(new Dotenv())->loadEnv($rootDir . '/.env');
 
 		$_SERVER += $_ENV;
 		$_SERVER[self::APP_ENV] = $_ENV[self::APP_ENV] = ($_SERVER[self::APP_ENV] ?? $_ENV[self::APP_ENV] ?? NULL) ?: 'dev';

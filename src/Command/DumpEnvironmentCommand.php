@@ -82,7 +82,7 @@ EOT;
 		putenv('SYMFONY_DOTENV_VARS='.$_SERVER['SYMFONY_DOTENV_VARS']);
 
 		try {
-			(new Dotenv(FALSE))->loadEnv($path);
+			(new Dotenv())->loadEnv($path);
 
 			unset($_ENV['SYMFONY_DOTENV_VARS']);
 
