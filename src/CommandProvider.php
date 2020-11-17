@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment;
 
-use Composer;
+use Composer\Plugin\Capability\CommandProvider as CommandProviderInterface;
 
-final class CommandProvider implements Composer\Plugin\Capability\CommandProvider
+final class CommandProvider implements CommandProviderInterface
 {
-	/** @var Composer\Composer  */
+	/** @var \Composer\Composer  */
 	private $composer;
 
 	/**

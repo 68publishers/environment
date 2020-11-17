@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
-final class SimpleCookieDetector implements IDebugModeDetector
+final class SimpleCookieDetector implements DebugModeDetectorInterface
 {
 	/** @var string  */
 	private $value;

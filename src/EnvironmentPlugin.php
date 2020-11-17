@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment;
 
-use Composer;
+use Composer\Composer;
+use Composer\IO\IOInterface;
+use Composer\Plugin\Capable;
+use Composer\Plugin\PluginInterface;
+use Composer\Plugin\Capability\CommandProvider as CommandProviderInterface;
 
-final class EnvironmentPlugin implements Composer\Plugin\PluginInterface, Composer\Plugin\Capable
+final class EnvironmentPlugin implements PluginInterface, Capable
 {
 	/**************** interface Composer\Plugin\PluginInterface ****************[
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function activate(Composer\Composer $composer, Composer\IO\IOInterface $io): void
+	public function activate(Composer $composer, IOInterface $io): void
 	{
 	}
 
@@ -25,7 +29,7 @@ final class EnvironmentPlugin implements Composer\Plugin\PluginInterface, Compos
 	public function getCapabilities(): array
 	{
 		return [
-			Composer\Plugin\Capability\CommandProvider::class => CommandProvider::class,
+			CommandProviderInterface::class => CommandProvider::class,
 		];
 	}
 }

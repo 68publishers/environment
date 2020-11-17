@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
-final class IpAddressDetector implements IDebugModeDetector
+final class IpAddressDetector implements DebugModeDetectorInterface
 {
 	/** @var array  */
 	private $list;
