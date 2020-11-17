@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
-use SixtyEightPublishers;
+use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
-final class EnvDetector implements IDebugModeDetector
+final class EnvDetector implements DebugModeDetectorInterface
 {
 	/**************** interface SixtyEightPublishers\Environment\Debug\IDebugModeDetector ****************[
 
@@ -15,7 +15,7 @@ final class EnvDetector implements IDebugModeDetector
 	 */
 	public function detect(): bool
 	{
-		$debug = $_SERVER[SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_DEBUG] ?? $_ENV[SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_DEBUG] ?? 'prod' !== $_SERVER[SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_ENV];
+		$debug = $_SERVER[EnvBootstrap::APP_DEBUG] ?? $_ENV[EnvBootstrap::APP_DEBUG] ?? 'prod' !== $_SERVER[EnvBootstrap::APP_ENV];
 
 		return (bool) $debug || (bool) filter_var($debug, FILTER_VALIDATE_BOOLEAN);
 	}

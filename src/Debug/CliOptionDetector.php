@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
-final class CliOptionDetector implements IDebugModeDetector
+final class CliOptionDetector implements DebugModeDetectorInterface
 {
 	/** @var string  */
 	private $optionName;

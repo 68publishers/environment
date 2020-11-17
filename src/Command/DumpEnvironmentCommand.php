@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Command;
 
-use Symfony;
-use Composer;
-use SixtyEightPublishers;
+use Composer\Command\BaseCommand;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
-final class DumpEnvironmentCommand extends Composer\Command\BaseCommand
+final class DumpEnvironmentCommand extends BaseCommand
 {
 	/** @var string  */
 	private $rootDir;
@@ -32,15 +35,15 @@ final class DumpEnvironmentCommand extends Composer\Command\BaseCommand
 		$this->setName('environment:dump')
 			->setAliases(['env:dump'])
 			->setDescription('Compiles variables from .env files to .env.local.php.')
-			->addArgument('env', Symfony\Component\Console\Input\InputArgument::REQUIRED, 'The application environment to dump .env files for - e.g. "prod".');
+			->addArgument('env', InputArgument::REQUIRED, 'The application environment to dump .env files for - e.g. "prod".');
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function execute(Symfony\Component\Console\Input\InputInterface $input, Symfony\Component\Console\Output\OutputInterface $output): int
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$_SERVER[SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_ENV] = $env = $input->getArgument('env');
+		$_SERVER[EnvBootstrap::APP_ENV] = $env = $input->getArgument('env');
 		$filename = $this->rootDir . '/.env';
 		$variables = var_export($this->loadEnv($filename, $env), TRUE);
 
@@ -71,15 +74,15 @@ EOT;
 		// save original variables
 		$backup = [$_SERVER, $_ENV];
 
-		unset($_SERVER[SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_ENV]);
-		$_ENV = [SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap::APP_ENV => $env];
+		unset($_SERVER[EnvBootstrap::APP_ENV]);
+		$_ENV = [EnvBootstrap::APP_ENV => $env];
 
 		// Load SYMFONY_DOTENV_VARS variable that is used by symfony/dotenv
 		$_SERVER['SYMFONY_DOTENV_VARS'] = implode(',', array_keys($_SERVER));
 		putenv('SYMFONY_DOTENV_VARS='.$_SERVER['SYMFONY_DOTENV_VARS']);
 
 		try {
-			(new Symfony\Component\Dotenv\Dotenv(FALSE))->loadEnv($path);
+			(new Dotenv(FALSE))->loadEnv($path);
 
 			unset($_ENV['SYMFONY_DOTENV_VARS']);
 

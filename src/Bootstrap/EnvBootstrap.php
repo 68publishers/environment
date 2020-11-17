@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Bootstrap;
 
-use Nette;
-use Symfony;
+use RuntimeException;
+use Nette\Configurator;
+use Symfony\Component\Dotenv\Dotenv;
 
 final class EnvBootstrap
 {
@@ -17,15 +18,15 @@ final class EnvBootstrap
 	 */
 	public function __construct()
 	{
-		throw new \RuntimeException(sprintf(
+		throw new RuntimeException(sprintf(
 			'Class %s can\'t be initialized via the constructor.',
 			static::class
 		));
 	}
 
 	/**
-	 * @param string                                                       $rootDir
-	 * @param \SixtyEightPublishers\Environment\Debug\IDebugModeDetector[] $debugModeDetectors
+	 * @param string                                                               $rootDir
+	 * @param \SixtyEightPublishers\Environment\Debug\DebugModeDetectorInterface[] $debugModeDetectors
 	 *
 	 * @return array
 	 */
@@ -44,7 +45,7 @@ final class EnvBootstrap
 	 *
 	 * @return array
 	 */
-	public static function bootNetteConfigurator(Nette\Configurator $configurator, string $rootDir, array $debugModeDetectors = []): array
+	public static function bootNetteConfigurator(Configurator $configurator, string $rootDir, array $debugModeDetectors = []): array
 	{
 		$env = self::boot($rootDir, $debugModeDetectors);
 
@@ -72,11 +73,11 @@ final class EnvBootstrap
 			return;
 		}
 
-		if (!class_exists(Symfony\Component\Dotenv\Dotenv::class)) {
-			throw new \RuntimeException('Please required package symfony/dotenv.');
+		if (!class_exists(Dotenv::class)) {
+			throw new RuntimeException('Please required package symfony/dotenv.');
 		}
 
-		(new Symfony\Component\Dotenv\Dotenv(FALSE))->loadEnv($rootDir . '/.env');
+		(new Dotenv(FALSE))->loadEnv($rootDir . '/.env');
 
 		$_SERVER += $_ENV;
 		$_SERVER[self::APP_ENV] = $_ENV[self::APP_ENV] = ($_SERVER[self::APP_ENV] ?? $_ENV[self::APP_ENV] ?? NULL) ?: 'dev';

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Helper;
 
+use RuntimeException;
+use InvalidArgumentException;
+
 final class EnvAccessor
 {
 	/** @var array  */
@@ -25,7 +28,7 @@ final class EnvAccessor
 	 */
 	public function __construct()
 	{
-		throw new \RuntimeException(sprintf(
+		throw new RuntimeException(sprintf(
 			'Class %s can\'t be initialized via the constructor.',
 			static::class
 		));
@@ -44,7 +47,7 @@ final class EnvAccessor
 			$value = $_ENV[$name];
 		} else {
 			if (3 > func_num_args()) {
-				throw new \InvalidArgumentException(sprintf(
+				throw new InvalidArgumentException(sprintf(
 					'ENV variable %s is not defined.',
 					$name
 				));
