@@ -33,7 +33,7 @@ use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-EnvBootstrap::boot(__DIR__ . '/..', [
+EnvBootstrap::boot([
     new Debug\CliOptionDetector('debug_please'), // the debug mode is enabled if an option "--debug_please" is defined (CLI only)
     new Debug\IpAddressDetector([
         '185.141.252.240', // the debug mode is enabled always for this IP address
@@ -57,7 +57,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $configurator = new Nette\Configurator;
 
-EnvBootstrap::bootNetteConfigurator($configurator, __DIR__ . '/..', [
+EnvBootstrap::bootNetteConfigurator($configurator, [
 	// define detectors here
 ]);
 
