@@ -18,7 +18,7 @@ final class EnvAccessor
 		'boolean' => 'boolval',
 		'bool' => 'boolval',
 		'base64'=> 'base64_encode',
-		'json_encode' => [__CLASS__, 'toJsonArray'],
+		'json_decode' => [__CLASS__, 'toJsonArray'],
 		'not' => [__CLASS__, 'negate'],
 		'negate' => [__CLASS__, 'negate'],
 	];
