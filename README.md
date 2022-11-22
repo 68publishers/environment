@@ -105,7 +105,7 @@ extensions:
 The command works just like the composer command. The `env` argument is optional here, the current `APP_ENV` of the application is used as the default value.
 
 ```sh
-$ bin/console dotenv:dump [<env>] [<--empty>]
+$ bin/console dotenv:dump [<env>] [--empty]
 ```
 
 #### Command `debug:dotenv`

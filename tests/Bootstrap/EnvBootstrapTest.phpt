@@ -8,6 +8,7 @@ use Tester\Assert;
 use Tester\Helpers;
 use Tester\TestCase;
 use Nette\Bootstrap\Configurator;
+use Tester\CodeCoverage\Collector;
 use SixtyEightPublishers\Environment\Debug\EnvDetector;
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 use SixtyEightPublishers\Environment\Tests\Fixtures\ServiceFixture;
@@ -226,6 +227,14 @@ final class EnvBootstrapTest extends TestCase
 			Assert::same('b1', $parameters['env']['TEST_B']);
 			Assert::hasNotKey('TEST_C', $parameters['env']);
 		});
+	}
+
+	protected function tearDown(): void
+	{
+		# save manually partial code coverage to free memory
+		if (Collector::isStarted()) {
+			Collector::save();
+		}
 	}
 
 	public function createConfigurator(): Configurator
