@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
+use function in_array;
+use function is_string;
+
 final class IpAddressDetector implements DebugModeDetectorInterface
 {
-	/** @var array  */
-	private $list;
+	/** @var array<string> */
+	private array $list;
 
-	/** @var string  */
-	private $cookieName;
+	private ?string $cookieName;
 
 	/**
-	 * @param array       $list
-	 * @param string|NULL $cookieName
+	 * @param array<string> $list
 	 */
 	public function __construct(array $list, ?string $cookieName = 'app-debug')
 	{
@@ -22,14 +23,9 @@ final class IpAddressDetector implements DebugModeDetectorInterface
 		$this->cookieName = $cookieName;
 	}
 
-	/**************** interface SixtyEightPublishers\Environment\Debug\IDebugModeDetector ****************[
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function detect(): bool
 	{
-		$address = $_SERVER['REMOTE_ADDR'] ?? php_uname('n');
+		$address = $_SERVER['REMOTE_ADDR'] ?? NULL;
 
 		if (in_array($address, $this->list, TRUE)) {
 			return TRUE;

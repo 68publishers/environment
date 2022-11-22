@@ -12,34 +12,18 @@ use Composer\Plugin\Capability\CommandProvider as CommandProviderInterface;
 
 final class EnvironmentPlugin implements PluginInterface, Capable
 {
-	/**************** interface Composer\Plugin\PluginInterface ****************[
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function activate(Composer $composer, IOInterface $io): void
 	{
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function deactivate(Composer $composer, IOInterface $io)
+	public function deactivate(Composer $composer, IOInterface $io): void
 	{
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function uninstall(Composer $composer, IOInterface $io)
+	public function uninstall(Composer $composer, IOInterface $io): void
 	{
 	}
 
-	/**************** interface Composer\Plugin\Capable ****************[
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function getCapabilities(): array
 	{
 		return [

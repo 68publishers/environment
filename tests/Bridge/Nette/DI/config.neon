@@ -1,0 +1,8 @@
+extensions:
+	environment: SixtyEightPublishers\Environment\Bridge\Nette\DI\EnvironmentExtension(%cwd%)
+
+services:
+	-
+		type: Symfony\Component\Console\Application
+		setup:
+			- addCommands(typed(Symfony\Component\Console\Command\Command))

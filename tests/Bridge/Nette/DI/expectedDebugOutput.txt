@@ -1,0 +1,28 @@
+
+Dotenv Variables & Files
+========================
+
+Scanned Files (in descending priority)
+--------------------------------------
+
+ * ⨯ .env.local.php
+ * ⨯ .env.dev.local
+ * ✓ .env.dev
+ * ⨯ .env.local
+ * ✓ .env
+
+Variables
+---------
+
+ ----------- ------- ---------- ------ 
+  Variable    Value   .env.dev   .env  
+ ----------- ------- ---------- ------ 
+  APP_DEBUG   1       n/a        1     
+  APP_ENV     dev     n/a        n/a   
+  TEST_A      a       n/a        a     
+  TEST_B      b       n/a        b     
+  TEST_C      c       c          n/a   
+ ----------- ------- ---------- ------ 
+
+ // Note real values might be different between web and CLI.                    
+

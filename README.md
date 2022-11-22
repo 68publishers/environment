@@ -1,10 +1,18 @@
-# Environment
+<h1 align="center">Environment</h1>
 
-The component based on the [symfony/dotenv](https://symfony.com/doc/current/components/dotenv.html) for simple loading of the ENV variables and detecting a debug mode.
+<p align="center">The component based on the <a href="https://symfony.com/doc/current/components/dotenv.html">symfony/dotenv</a> for simple loading of the ENV variables and detecting a debug mode.</p>
+
+<p align="center">
+<a href="https://github.com/68publishers/environment/actions"><img alt="Checks" src="https://badgen.net/github/checks/68publishers/environment/master"></a>
+<a href="https://coveralls.io/github/68publishers/environment?branch=master"><img alt="Coverage Status" src="https://coveralls.io/repos/github/68publishers/environment/badge.svg?branch=master"></a>
+<a href="https://packagist.org/packages/68publishers/environment"><img alt="Total Downloads" src="https://badgen.net/packagist/dt/68publishers/environment"></a>
+<a href="https://packagist.org/packages/68publishers/environment"><img alt="Latest Version" src="https://badgen.net/packagist/v/68publishers/environment"></a>
+<a href="https://packagist.org/packages/68publishers/environment"><img alt="PHP Version" src="https://badgen.net/packagist/php/68publishers/environment"></a>
+</p>
 
 ## Installation
 
-```bash
+```sh
 $ composer require 68publishers/environment
 ```
 
@@ -46,16 +54,17 @@ EnvBootstrap::boot([
 // All your ENV variables are now accessible in the global arrays `$_ENV` and `$_SERVER`
 ```
 
-If you're using [Nette Framework](https://nette.org) then you can in the bootstrap use this method instead:
+If you're using [Nette Framework](https://nette.org) then you can use this method in the application bootstrap instead:
 
 ```php
 <?php
 
+use Nette\Bootstrap\Configurator;
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$configurator = new Nette\Configurator;
+$configurator = new Configurator();
 
 EnvBootstrap::bootNetteConfigurator($configurator, [
 	// define detectors here
@@ -73,25 +82,48 @@ This is a good solution for developers because all changes are immediately appli
 But sometimes (mainly on the production) you don't want to parse `.env` files in each request. If you want to cache the ENV variables then run following Composer command:
 
 ```bash
-$ composer environment:dump <APP_ENV>
+$ composer dotenv:dump <APP_ENV>
 
 or shorter
 
-$ composer env:dump <APP_ENV>
+$ composer dump-env <APP_ENV>
 ```
 
-The file `.env.local.php` will be created in the application's root directory and it will be used instead of all your `.env` files.
+The file `.env.local.php` will be created in the application's root directory, and it will be used instead of all your `.env` files.
+
+### Nette DI Extension
+
+The package includes the Compiler Extension to Nette DI. Its registration is not necessary for variables loading to work, but it adds two console commands to the application.
+
+```neon
+extensions:
+	environment: SixtyEightPublishers\Environment\Bridge\Nette\DI\EnvironmentExtension
+```
+
+#### Command `dotenv:dump`
+
+The command works just like the composer command. The `env` argument is optional here, the current `APP_ENV` of the application is used as the default value.
+
+```sh
+$ bin/console dotenv:dump [<env>] [<--empty>]
+```
+
+#### Command `debug:dotenv`
+
+The command lists all dotenv files with variables and values.
+
+```sh
+$ bin/console debug:dotenv
+```
 
 ## Contributing
 
-Before committing any changes, don't forget to run
+Before opening a pull request, please check your changes using the following commands
 
 ```bash
-$ vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run
-```
+$ make init # to pull and start all docker images
 
-and
-
-```bash
-$ vendor/bin/tester ./tests
+$ make cs.check
+$ make stan
+$ make tests.all
 ```
