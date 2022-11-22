@@ -5,6 +5,11 @@ declare(strict_types=1);
 use SixtyEightPublishers\Environment\Helper\EnvAccessor;
 
 if (!function_exists('env')) {
+	/**
+	 * @param mixed|null $default
+	 *
+	 * @return mixed
+	 */
 	function env(string $env, $default = NULL)
 	{
 		$parts = explode('|', $env);

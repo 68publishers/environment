@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace SixtyEightPublishers\Environment\Debug;
 
+use function in_array;
+use function array_search;
+use const PHP_SAPI;
+
 final class CliOptionDetector implements DebugModeDetectorInterface
 {
-	/** @var string  */
-	private $optionName;
+	private string $optionName;
 
-	/**
-	 * @param string $optionName
-	 */
 	public function __construct(string $optionName = 'app-debug')
 	{
 		$this->optionName = $optionName;
 	}
 
-	/**************** interface SixtyEightPublishers\Environment\Debug\IDebugModeDetector ****************[
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function detect(): bool
 	{
 		if ('cli' !== PHP_SAPI) {

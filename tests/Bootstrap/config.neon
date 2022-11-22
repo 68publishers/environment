@@ -1,0 +1,9 @@
+services:
+	serviceA:
+		factory: SixtyEightPublishers\Environment\Tests\Fixtures\ServiceFixture(
+			::env(APP_ENV)
+			%debugMode%
+			::env(TEST_A)
+			::env(TEST_B)
+			::env('TEST_C|integer', 0)
+		)
