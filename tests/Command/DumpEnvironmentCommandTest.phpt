@@ -11,6 +11,7 @@ use Tester\TestCase;
 use RuntimeException;
 use Composer\IO\NullIO;
 use Composer\Console\Application;
+use Tester\CodeCoverage\Collector;
 use Symfony\Component\Console\Tester\CommandTester;
 use SixtyEightPublishers\Environment\Command\DumpEnvironmentCommand;
 
@@ -90,6 +91,14 @@ final class DumpEnvironmentCommandTest extends TestCase
 				'APP_ENV' => 'staging',
 			]
 		);
+	}
+
+	protected function tearDown(): void
+	{
+		# save manually partial code coverage to free memory
+		if (Collector::isStarted()) {
+			Collector::save();
+		}
 	}
 
 	private function runDumpEnvironmentCommand(string $directory, array $args, array $expected): void
