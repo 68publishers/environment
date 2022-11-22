@@ -48,7 +48,7 @@ EnvBootstrap::boot([
         'john_dee@135.151.252.240', // the debug mode is enabled for this IP address and a cookie called "debug_please" must exist with value "john_dee"
     ], 'debug_please'),
     new Debug\SimpleCookieDetector('ineeddebug123', 'debug_please'), // the debug mode is enabled if a cookie called "debug_please" exists and has the value "ineeddebug123"
-    new Debug\EnvDetector(), // the detection is performed from loaded ENV variables, the debug mode is enabled if a variable "DEBUG=1" is defined or if a variable "APP_ENV" has a different value than, "prod"
+    new Debug\EnvDetector(), // the detection is performed from loaded ENV variables, the debug mode is enabled if a variable "APP_DEBUG=1" is defined or if a variable "APP_ENV" has a different value than, "prod"
 ]);
 
 // All your ENV variables are now accessible in the global arrays `$_ENV` and `$_SERVER`
