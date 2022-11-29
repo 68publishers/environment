@@ -14,7 +14,7 @@ final class EnvironmentExtension extends CompilerExtension
 {
 	private string $projectDir;
 
-	public function __construct(?string $projectDir)
+	public function __construct(?string $projectDir = NULL)
 	{
 		$this->projectDir = $projectDir ?? ProjectDirectoryResolver::resolveRootDir();
 	}
