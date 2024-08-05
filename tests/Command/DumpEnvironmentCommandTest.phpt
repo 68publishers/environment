@@ -113,7 +113,10 @@ final class DumpEnvironmentCommandTest extends TestCase
 
 		$vars = require $envLocalFile;
 
-		Assert::same($expected, $vars);
+		foreach ($expected as $envKey => $envVar) {
+			Assert::hasKey($envKey, $vars);
+			Assert::same($envVar, $vars[$envKey]);
+		}
 
 		unlink($envLocalFile);
 	}

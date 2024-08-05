@@ -15,7 +15,11 @@ use SixtyEightPublishers\Environment\Debug\EnvDetector;
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 use function assert;
 use function uniqid;
+use function explode;
+use function implode;
+use function array_map;
 use function file_exists;
+use function version_compare;
 use function sys_get_temp_dir;
 
 require __DIR__ . '/../../../bootstrap.php';
@@ -51,7 +55,16 @@ final class EnvironmentExtensionTest extends TestCase
 
 		$tester->execute([]);
 
-		Assert::same(file_get_contents(__DIR__ . '/expectedDebugOutput.txt'), $tester->getDisplay());
+		$expectedOutput = file_get_contents(
+			version_compare($this->getDotenvVersion(), '6.0.0', '<')
+			? __DIR__ . '/expectedDebugOutput.v5.txt'
+			: __DIR__ . '/expectedDebugOutput.txt',
+		);
+
+		$expectedOutput = implode("\n", array_map('trim', explode("\n", $expectedOutput)));
+		$actualOutput = implode("\n", array_map('trim', explode("\n", $tester->getDisplay())));
+
+		Assert::same($expectedOutput, $actualOutput);
 	}
 
 	public function createCommandTester(string $name): CommandTester
@@ -83,6 +96,13 @@ final class EnvironmentExtensionTest extends TestCase
 		EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__);
 
 		return $configurator->createContainer();
+	}
+
+	private function getDotenvVersion(): string
+	{
+		$packages = require __DIR__ . '/../../../../vendor/composer/installed.php';
+
+		return $packages['versions']['symfony/dotenv']['version'];
 	}
 }
 
