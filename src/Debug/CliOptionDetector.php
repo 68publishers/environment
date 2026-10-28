@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SixtyEightPublishers\Environment\Debug;
 
 use function in_array;
+use function is_array;
 use function array_search;
 use const PHP_SAPI;
 
@@ -24,9 +25,11 @@ final class CliOptionDetector implements DebugModeDetectorInterface
 		}
 
 		$option = '--' . $this->optionName;
+		$argv = $_SERVER['argv'] ?? [];
 
-		if (in_array($option, $_SERVER['argv'] ?? [], TRUE)) {
-			unset($_SERVER['argv'][array_search($option, $_SERVER['argv'], TRUE)]);
+		if (is_array($argv) && in_array($option, $argv, TRUE)) {
+			unset($argv[array_search($option, $argv, TRUE)]);
+			$_SERVER['argv'] = $argv;
 
 			return TRUE;
 		}

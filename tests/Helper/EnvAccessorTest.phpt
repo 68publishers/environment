@@ -81,6 +81,8 @@ final class EnvAccessorTest extends TestCase
 			# chained
 			Assert::null(EnvAccessor::getEnv('TEST_SPACE_ONLY', ['trim', 'nullable']));
 			Assert::same(\base64_encode('efd'), EnvAccessor::getEnv('TEST_STRING_WITH_EXTRA_SPACES', ['trim', 'base64']));
+			Assert::null(EnvAccessor::getEnv('TEST_EMPTY', ['nullable', 'base64']));
+			Assert::null(EnvAccessor::getEnv('TEST_UNDEFINED', ['base64'], NULL));
 		});
 	}
 

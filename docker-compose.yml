@@ -1,38 +1,29 @@
 version: "3.7"
 
 services:
-    php74:
+    php83:
         build:
             context: .
             dockerfile: Dockerfile
-            target: php74
-        container_name: 68publishers.environment.74
+            target: php83
+        container_name: 68publishers.environment.83
         volumes:
             - .:/var/www/html:cached
 
-    php80:
+    php84:
         build:
             context: .
             dockerfile: Dockerfile
-            target: php80
-        container_name: 68publishers.environment.80
+            target: php84
+        container_name: 68publishers.environment.84
         volumes:
             - .:/var/www/html:cached
 
-    php81:
+    php85:
         build:
             context: .
             dockerfile: Dockerfile
-            target: php81
-        container_name: 68publishers.environment.81
-        volumes:
-            - .:/var/www/html:cached
-
-    php82:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: php82
-        container_name: 68publishers.environment.82
+            target: php85
+        container_name: 68publishers.environment.85
         volumes:
             - .:/var/www/html:cached

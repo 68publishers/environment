@@ -28,7 +28,10 @@ final class EnvBootstrap
 		self::loadEnv($rootDir);
 		self::detectDebugMode($debugModeDetectors);
 
-		return $_ENV;
+		/** @var array<string, string> $env */
+		$env = $_ENV;
+
+		return $env;
 	}
 
 	/**

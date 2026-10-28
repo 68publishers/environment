@@ -33,8 +33,9 @@ final class EnvironmentExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('command.debug'))
 			->setType(DebugCommand::class)
 			->setArguments([
-				'kernelEnvironment' => new Statement('::env', ['APP_ENV']),
-				'projectDirectory' => $this->projectDir,
+				// positional: the second parameter is `$projectDirectory` in symfony/dotenv < 7.4.6 / 8.0.0 - 8.0.5 and `$projectDir` since 7.4.6 / 8.0.6
+				new Statement('::env', ['APP_ENV']),
+				$this->projectDir,
 			]);
 	}
 }
