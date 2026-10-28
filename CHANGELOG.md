@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Minimal PHP version is 8.3.
 - The `debug:dotenv` command service (`EnvironmentExtension`) gets its constructor arguments positionally.
-- Dev tooling: PHPStan 2, Nette Tester 2.6+, PHP-CS-Fixer 3.89+, CI matrix PHP 8.3, 8.4 and 8.5 with the lowest and highest dependencies.
+- Dev tooling: PHPStan 2, Nette Tester 2.6+, PHP-CS-Fixer 3.89+, CI matrix PHP 8.3, 8.4 and 8.5 with the highest dependencies and PHP 8.3 with the lowest dependencies.
 
 ### Removed
 - ❗ Support for PHP < 8.3.

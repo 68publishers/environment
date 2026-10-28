@@ -16,7 +16,7 @@
 $ composer require 68publishers/environment
 ```
 
-The package requires PHP 8.3 or newer and `symfony/dotenv` `^5.4.42 || ^6.2 || ^7.0 || ^8.0`.
+The package requires PHP `^8.3` and `symfony/dotenv` `^5.4.42 || ^6.2 || ^7.0 || ^8.0`.
 
 ## Usage
 

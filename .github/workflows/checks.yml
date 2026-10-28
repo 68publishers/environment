@@ -9,6 +9,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   coding-style:
     name: Coding Style
@@ -17,6 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Install PHP
@@ -44,6 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Install PHP
@@ -74,6 +79,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Install PHP
