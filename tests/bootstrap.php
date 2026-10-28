@@ -10,5 +10,5 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 }
 
 Environment::setup();
-error_reporting(~E_DEPRECATED);
+error_reporting(E_ALL);
 date_default_timezone_set('Europe/Prague');

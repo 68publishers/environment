@@ -97,7 +97,10 @@ EOF;
 	 */
 	private function loadEnv(string $path, ?string $env): array
 	{
-		if (!file_exists($autoloadFile = $this->config->get('vendor-dir') . '/autoload.php')) {
+		$vendorDir = $this->config->get('vendor-dir');
+		assert(is_string($vendorDir));
+
+		if (!file_exists($autoloadFile = $vendorDir . '/autoload.php')) {
 			throw new RuntimeException(sprintf('Please run "composer install" before running this command: "%s" not found.', $autoloadFile));
 		}
 
@@ -124,6 +127,7 @@ EOF;
 			$dotenv->loadEnv($path, $envKey, 'dev', ['test']);
 
 			unset($_ENV['SYMFONY_DOTENV_VARS']);
+			/** @var array<string, string> $env */
 			$env = $_ENV;
 		} finally {
 			[$_SERVER, $_ENV] = $globalsBackup;

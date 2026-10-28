@@ -62,7 +62,7 @@ final class DumpEnvironmentCommandTest extends TestCase
 				],
 				[
 					'APP_ENV' => 'prod',
-					'BAR' => 'Foo',
+					'BAR' => '123',
 					'FOO' => '123',
 				]
 			);
@@ -134,7 +134,7 @@ final class DumpEnvironmentCommandTest extends TestCase
 			$this->io = new NullIO();
 		}, $application, $application)();
 
-		$application->add($command);
+		method_exists($application, 'addCommand') ? $application->addCommand($command) : $application->add($command);
 		$command = $application->find('dotenv:dump');
 
 		return new CommandTester($command);

@@ -25,7 +25,7 @@ final class IpAddressDetector implements DebugModeDetectorInterface
 
 	public function detect(): bool
 	{
-		$address = $_SERVER['REMOTE_ADDR'] ?? NULL;
+		$address = is_string($_SERVER['REMOTE_ADDR'] ?? NULL) ? $_SERVER['REMOTE_ADDR'] : NULL;
 
 		if (in_array($address, $this->list, TRUE)) {
 			return TRUE;

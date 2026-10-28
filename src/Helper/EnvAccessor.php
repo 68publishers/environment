@@ -10,6 +10,7 @@ use function trim;
 use function sprintf;
 use function is_string;
 use function json_decode;
+use function base64_encode;
 use function func_num_args;
 use function array_key_exists;
 
@@ -23,7 +24,7 @@ final class EnvAccessor
 		'float' => 'floatval',
 		'boolean' => 'boolval',
 		'bool' => 'boolval',
-		'base64'=> 'base64_encode',
+		'base64' => [__CLASS__, 'base64'],
 		'json_decode' => [__CLASS__, 'toJsonArray'],
 		'not' => [__CLASS__, 'negate'],
 		'negate' => [__CLASS__, 'negate'],
@@ -94,6 +95,17 @@ final class EnvAccessor
 	public static function nullable($value)
 	{
 		return '' === $value ? NULL : $value;
+	}
+
+	/**
+	 * @interal
+	 * @param mixed $value
+	 *
+	 * @return mixed|string
+	 */
+	public static function base64($value)
+	{
+		return is_string($value) ? base64_encode($value) : $value;
 	}
 
 	/**

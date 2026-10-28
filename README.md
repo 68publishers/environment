@@ -16,6 +16,8 @@
 $ composer require 68publishers/environment
 ```
 
+The package requires PHP `^8.3` and `symfony/dotenv` `^5.4.42 || ^6.2 || ^7.0 || ^8.0`.
+
 ## Usage
 
 ### Default ENV variables
@@ -115,6 +117,12 @@ The command lists all dotenv files with variables and values.
 ```sh
 $ bin/console debug:dotenv
 ```
+
+## Upgrade
+
+### 1.x → 2.0
+
+- The minimal PHP version is 8.3. There are no other BC breaks.
 
 ## Contributing
 
