@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-11-26
+
+### Added
+- `SecretCookieDetector`: the debug mode is enabled by a cookie with a secret. A missing, empty or short secret (fewer than 32 characters by default, configurable by the third argument) never enables the debug mode. The cookie is compared in constant time (`hash_equals()`).
+
+### Changed
+- ❗ `EnvBootstrap::bootNetteConfigurator()` no longer adds the ENV variables as the dynamic parameter `%env%` by default. The parameters are listed e.g. in the DI panel of the Tracy bar. Use `::env()` in the configuration, or pass `$addEnvParameter: TRUE` (the fourth argument) to keep the previous behaviour.
+- `SimpleCookieDetector` compares the cookie the same way as `SecretCookieDetector` (constant time, a non-empty value, string cookies only, without the minimal length) and its value is marked with `#[SensitiveParameter]`.
+
+### Deprecated
+- `SimpleCookieDetector`, use `SecretCookieDetector`.
+
 ## [2.0.0] - 2026-10-28
 
 ### Added
@@ -102,7 +114,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release.
 
-[Unreleased]: https://github.com/68publishers/environment/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/68publishers/environment/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/68publishers/environment/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/68publishers/environment/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/68publishers/environment/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/68publishers/environment/compare/v1.0.0...v1.0.1

@@ -86,7 +86,7 @@ final class EnvBootstrapTest extends TestCase
 		$this->withEnvBackup(function () {
 			$configurator = $this->createConfigurator();
 
-			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-without-local-php-env');
+			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-without-local-php-env', TRUE);
 
 			Assert::same('test', env('APP_ENV'));
 			Assert::same('1', env('APP_DEBUG'));
@@ -125,7 +125,7 @@ final class EnvBootstrapTest extends TestCase
 
 			$configurator = $this->createConfigurator();
 
-			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-without-local-php-env');
+			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-without-local-php-env', TRUE);
 
 			Assert::same('prod', env('APP_ENV'));
 			Assert::same('0', env('APP_DEBUG'));
@@ -160,7 +160,7 @@ final class EnvBootstrapTest extends TestCase
 		$this->withEnvBackup(function () {
 			$configurator = $this->createConfigurator();
 
-			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-with-local-php-env');
+			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-with-local-php-env', TRUE);
 
 			Assert::same('prod', env('APP_ENV'));
 			Assert::same('0', env('APP_DEBUG'));
@@ -199,7 +199,7 @@ final class EnvBootstrapTest extends TestCase
 
 			$configurator = $this->createConfigurator();
 
-			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-with-local-php-env');
+			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-with-local-php-env', TRUE);
 
 			Assert::same('staging', env('APP_ENV'));
 			Assert::same('1', env('APP_DEBUG'));
@@ -226,6 +226,30 @@ final class EnvBootstrapTest extends TestCase
 			Assert::same('a3', $parameters['env']['TEST_A']);
 			Assert::same('b1', $parameters['env']['TEST_B']);
 			Assert::hasNotKey('TEST_C', $parameters['env']);
+		});
+	}
+
+	public function testBootNetteConfiguratorDoesNotAddEnvParameterByDefault(): void
+	{
+		$this->withEnvBackup(function () {
+			$configurator = $this->createConfigurator();
+
+			EnvBootstrap::bootNetteConfigurator($configurator, [new EnvDetector()], __DIR__ . '/boot-without-local-php-env');
+
+			Assert::same('a1', env('TEST_A'));
+			Assert::true($configurator->isDebugMode());
+
+			$container = $configurator->createContainer();
+
+			Assert::hasNotKey('env', $container->getParameters());
+
+			# ::env() in the configuration works without the parameter
+			$serviceA = $container->getService('serviceA');
+			assert($serviceA instanceof ServiceFixture);
+
+			Assert::same('test', $serviceA->appEnv);
+			Assert::same('a1', $serviceA->a);
+			Assert::same(15, $serviceA->c);
 		});
 	}
 

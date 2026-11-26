@@ -49,7 +49,7 @@ EnvBootstrap::boot([
         '185.141.252.240', // the debug mode is enabled always for this IP address
         'john_dee@135.151.252.240', // the debug mode is enabled for this IP address and a cookie called "debug_please" must exist with value "john_dee"
     ], 'debug_please'),
-    new Debug\SimpleCookieDetector('ineeddebug123', 'debug_please'), // the debug mode is enabled if a cookie called "debug_please" exists and has the value "ineeddebug123"
+    new Debug\SecretCookieDetector($_ENV['APP_DEBUG_COOKIE_SECRET'] ?? NULL, 'debug_please'), // the debug mode is enabled if a cookie called "debug_please" exists and has the value of the secret, a missing or short secret (fewer than 32 characters by default, the third argument) never enables the debug mode
     new Debug\EnvDetector(), // the detection is performed from loaded ENV variables, the debug mode is enabled if a variable "APP_DEBUG=1" is defined or if a variable "APP_ENV" has a different value than, "prod"
 ]);
 
@@ -74,8 +74,17 @@ EnvBootstrap::bootNetteConfigurator($configurator, [
 
 // All your ENV variables are now accessible in the global arrays `$_ENV` and `$_SERVER`
 // The debug mode on the configurator is set by the ENV variable `APP_DEBUG`
-// The ENV variables are accessible in DI container and Neon configuration as dynamic parameters with prefix `env.` e.g. `%env.APP_ENV%`
+// The ENV variables are accessible in Neon configuration via `::env()`, e.g. `::env(APP_ENV)`
 ```
+
+The method no longer adds the ENV variables as the dynamic parameter `%env%` by default since v3.0.0. The parameters are listed in the DI panel of the Tracy bar, so all secrets would be visible in the debug mode.
+If you still need `%env.APP_ENV%` in the configuration, pass `TRUE` as the fourth argument:
+
+```php
+EnvBootstrap::bootNetteConfigurator($configurator, [/* detectors */], NULL, TRUE);
+```
+
+Generate the secret for `SecretCookieDetector` with e.g. `openssl rand -hex 32`. The `SimpleCookieDetector` is deprecated, it accepts a secret of any length.
 
 ### ENV variables caching/dumping
 
