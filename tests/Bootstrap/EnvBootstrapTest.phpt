@@ -11,6 +11,7 @@ use Nette\Bootstrap\Configurator;
 use Tester\CodeCoverage\Collector;
 use SixtyEightPublishers\Environment\Debug\EnvDetector;
 use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
+use SixtyEightPublishers\Environment\Debug\SecretCookieDetector;
 use SixtyEightPublishers\Environment\Tests\Fixtures\ServiceFixture;
 use function env;
 use function assert;
@@ -31,6 +32,24 @@ final class EnvBootstrapTest extends TestCase
 			Assert::same('a1', env('TEST_A'));
 			Assert::same('b2', env('TEST_B'));
 			Assert::same('15', env('TEST_C'));
+		});
+	}
+
+	public function testDetectorsFromGeneratorCanReadVariablesFromEnvFile(): void
+	{
+		$this->withEnvBackup(static function () {
+			$_COOKIE['debug_please'] = '5f1c8e2a9b7d4c6e8f0a1b2c3d4e5f6a';
+
+			try {
+				# the generator runs after .env is loaded, an array would read the secret before
+				EnvBootstrap::boot((static function (): iterable {
+					yield new SecretCookieDetector($_ENV['TEST_DEBUG_COOKIE_SECRET'] ?? NULL, 'debug_please');
+				})(), __DIR__ . '/boot-without-local-php-env');
+			} finally {
+				unset($_COOKIE['debug_please']);
+			}
+
+			Assert::same('1', env('APP_DEBUG'));
 		});
 	}
 
