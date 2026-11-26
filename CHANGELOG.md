@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - ❗ `EnvBootstrap::bootNetteConfigurator()` no longer adds the ENV variables as the dynamic parameter `%env%` by default. The parameters are listed e.g. in the DI panel of the Tracy bar. Use `::env()` in the configuration, or pass `$addEnvParameter: TRUE` (the fourth argument) to keep the previous behaviour.
+- The package requires `ext-mbstring` (`SecretCookieDetector` counts the characters of the secret).
 - `SimpleCookieDetector` compares the cookie the same way as `SecretCookieDetector` (constant time, a non-empty value, string cookies only, without the minimal length) and its value is marked with `#[SensitiveParameter]`.
 
 ### Deprecated

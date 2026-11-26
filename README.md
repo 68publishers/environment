@@ -33,7 +33,8 @@ The default value for `APP_ENV` is `dev` and `0` for `APP_DEBUG`.
 ### ENV variables loading  
 
 For ENV variables loading call this static method after requiring Composer's autoload and before your application is stared. 
-The first argument is a relative path to the application root directory and the second argument is an array of debug mode detectors.
+The first argument is an iterable of debug mode detectors and the second argument is an optional path to the application root directory.
+The detectors are iterated after the `.env` files are loaded, so a generator can read the ENV variables defined in them.
 
 ```php
 <?php
@@ -43,15 +44,18 @@ use SixtyEightPublishers\Environment\Bootstrap\EnvBootstrap;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-EnvBootstrap::boot([
-    new Debug\CliOptionDetector('debug_please'), // the debug mode is enabled if an option "--debug_please" is defined (CLI only)
-    new Debug\IpAddressDetector([
+EnvBootstrap::boot((static function (): iterable {
+    yield new Debug\CliOptionDetector('debug_please'); // the debug mode is enabled if an option "--debug_please" is defined (CLI only)
+    yield new Debug\IpAddressDetector([
         '185.141.252.240', // the debug mode is enabled always for this IP address
         'john_dee@135.151.252.240', // the debug mode is enabled for this IP address and a cookie called "debug_please" must exist with value "john_dee"
-    ], 'debug_please'),
-    new Debug\SecretCookieDetector($_ENV['APP_DEBUG_COOKIE_SECRET'] ?? NULL, 'debug_please'), // the debug mode is enabled if a cookie called "debug_please" exists and has the value of the secret, a missing or short secret (fewer than 32 characters by default, the third argument) never enables the debug mode
-    new Debug\EnvDetector(), // the detection is performed from loaded ENV variables, the debug mode is enabled if a variable "APP_DEBUG=1" is defined or if a variable "APP_ENV" has a different value than, "prod"
-]);
+    ], 'debug_please');
+    // the debug mode is enabled if a cookie called "debug_please" exists and has the value of the secret,
+    // a missing or short secret (fewer than 32 characters by default, the third argument) never enables the debug mode
+    // the generator runs after `.env` is loaded, so the secret can be defined there
+    yield new Debug\SecretCookieDetector($_ENV['APP_DEBUG_COOKIE_SECRET'] ?? NULL, 'debug_please');
+    yield new Debug\EnvDetector(); // the detection is performed from loaded ENV variables, the debug mode is enabled if a variable "APP_DEBUG=1" is defined or if a variable "APP_ENV" has a different value than, "prod"
+})());
 
 // All your ENV variables are now accessible in the global arrays `$_ENV` and `$_SERVER`
 ```
