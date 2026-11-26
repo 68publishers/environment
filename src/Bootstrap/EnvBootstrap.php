@@ -36,17 +36,21 @@ final class EnvBootstrap
 
 	/**
 	 * @param iterable<DebugModeDetectorInterface> $debugModeDetectors
+	 * @param bool                                 $addEnvParameter    Adds all ENV variables as the dynamic parameter `%env%`. They are then listed (secrets included) e.g. in the DI panel of the Tracy bar, prefer `::env()` in the configuration.
 	 *
 	 * @return array<string, string>
 	 */
-	public static function bootNetteConfigurator(Configurator $configurator, iterable $debugModeDetectors = [], ?string $rootDir = NULL): array
+	public static function bootNetteConfigurator(Configurator $configurator, iterable $debugModeDetectors = [], ?string $rootDir = NULL, bool $addEnvParameter = FALSE): array
 	{
 		$env = self::boot($debugModeDetectors, $rootDir);
 
 		$configurator->setDebugMode((bool) $env[self::APP_DEBUG]);
-		$configurator->addDynamicParameters([
-			'env' => $env,
-		]);
+
+		if ($addEnvParameter) {
+			$configurator->addDynamicParameters([
+				'env' => $env,
+			]);
+		}
 
 		return $env;
 	}

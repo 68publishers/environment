@@ -41,6 +41,29 @@ final class SimpleCookieDetectorTest extends TestCase
 
 		Assert::true($this->detector->detect());
 	}
+
+	public function testDebugModeShouldNotBeDetectedIfCookieIsArray(): void
+	{
+		$_COOKIE['app-debug'] = ['allow'];
+
+		Assert::false($this->detector->detect());
+	}
+
+	public function testDebugModeShouldNeverBeDetectedWithEmptyValue(): void
+	{
+		$detector = new SimpleCookieDetector('');
+
+		$_COOKIE['app-debug'] = '';
+		Assert::false($detector->detect());
+
+		unset($_COOKIE['app-debug']);
+		Assert::false($detector->detect());
+	}
+
+	protected function tearDown(): void
+	{
+		unset($_COOKIE['app-debug']);
+	}
 }
 
 (new SimpleCookieDetectorTest())->run();
